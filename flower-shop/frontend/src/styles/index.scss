@@ -1,0 +1,7 @@
+/* Main style entry point */
+@import './variables.scss';
+@import './mixins.scss';
+@import './global.scss';
+
+/* Import component styles as needed */
+// These will be imported as we create components
