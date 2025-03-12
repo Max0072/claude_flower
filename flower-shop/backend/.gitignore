@@ -1,27 +1,15 @@
 # Dependencies
 node_modules/
-npm-debug.log
-yarn-error.log
-yarn-debug.log
-package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Environment variables
+# Environment
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# IDE and editor files
-.vscode/
-.idea/
-*.sublime-*
-*.swp
-*.swo
-
-# OS files
-.DS_Store
-Thumbs.db
+.env.development
+.env.test
+.env.production
 
 # Logs
 logs/
@@ -33,13 +21,32 @@ pids/
 *.seed
 *.pid.lock
 
-# Testing
+# Coverage directory
 coverage/
 
-# Build outputs
-build/
-dist/
-tmp/
+# Testing output
+.nyc_output
 
-# Uploads directory
-uploads/
+# Build output
+dist/
+build/
+
+# Editor folders
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploads & Generated files
+uploads/*
+!uploads/.gitkeep
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Temp files
+tmp/
+temp/

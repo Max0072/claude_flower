@@ -4,9 +4,9 @@ services:
   frontend:
     build:
       context: ../frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
-      - "3000:5173"
+      - "3000:3000"
     volumes:
       - ../frontend:/app
       - /app/node_modules
@@ -15,11 +15,12 @@ services:
       - VITE_API_URL=http://localhost:5000/api/v1
     depends_on:
       - backend
+    command: npm run dev
 
   backend:
     build:
       context: ../backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "5000:5000"
     volumes:
@@ -29,10 +30,13 @@ services:
       - NODE_ENV=development
       - PORT=5000
       - MONGO_URI=mongodb://mongo:27017/flora
-      - JWT_SECRET=your_jwt_secret
+      - JWT_SECRET=dev_jwt_secret
       - JWT_EXPIRE=30d
+      - REDIS_URI=redis://redis:6379
     depends_on:
       - mongo
+      - redis
+    command: npm run dev
 
   mongo:
     image: mongo:latest
@@ -43,5 +47,13 @@ services:
     environment:
       - MONGO_INITDB_DATABASE=flora
 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
 volumes:
   mongo-data:
+  redis-data:

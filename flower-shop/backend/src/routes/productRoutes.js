@@ -1,92 +1,103 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  createProductReview,
-  getFeaturedProducts,
+const { 
+  getProducts, 
+  getProductById, 
+  createProduct, 
+  updateProduct, 
+  deleteProduct 
 } = require('../controllers/productController');
-const { protect, authorize } = require('../utils/authMiddleware');
-const { validate, productValidation, reviewValidation } = require('../utils/validationMiddleware');
+const { protect, admin } = require('../utils/authMiddleware');
 
 /**
  * @swagger
  * /products:
  *   get:
- *     summary: Get all products
+ *     summary: Получение списка товаров
+ *     description: Получение списка товаров с возможностью фильтрации, сортировки и пагинации
  *     tags: [Products]
  *     parameters:
  *       - in: query
  *         name: category
  *         schema:
  *           type: string
- *         description: Filter products by category
+ *         description: Фильтр по категории товара
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *         description: Минимальная цена для фильтрации
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *         description: Максимальная цена для фильтрации
+ *       - in: query
+ *         name: inStock
+ *         schema:
+ *           type: boolean
+ *         description: Фильтр по наличию на складе
+ *       - in: query
+ *         name: featured
+ *         schema:
+ *           type: boolean
+ *         description: Фильтр по признаку "рекомендуемый"
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Поиск по названию и описанию
  *       - in: query
  *         name: sort
  *         schema:
  *           type: string
  *           enum: [price_asc, price_desc, newest, rating]
- *         description: Sort products
+ *         description: Параметр сортировки
  *       - in: query
  *         name: page
  *         schema:
  *           type: integer
  *           default: 1
- *         description: Page number
+ *         description: Номер страницы
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
  *           default: 10
- *         description: Number of items per page
- *       - in: query
- *         name: search
- *         schema:
- *           type: string
- *         description: Search term for product name
- *       - in: query
- *         name: minPrice
- *         schema:
- *           type: integer
- *         description: Minimum price filter
- *       - in: query
- *         name: maxPrice
- *         schema:
- *           type: integer
- *         description: Maximum price filter
+ *         description: Количество товаров на странице
  *     responses:
  *       200:
- *         description: List of products
+ *         description: Успешное получение списка товаров
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *                 page:
+ *                   type: number
+ *                 pages:
+ *                   type: number
+ *                 total:
+ *                   type: number
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
-router.get('/', getProducts);
-
-/**
- * @swagger
- * /products/featured:
- *   get:
- *     summary: Get featured products
- *     tags: [Products]
- *     parameters:
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           default: 5
- *         description: Number of products to return
- *     responses:
- *       200:
- *         description: List of featured products
- */
-router.get('/featured', getFeaturedProducts);
+router.route('/').get(getProducts);
 
 /**
  * @swagger
  * /products/{id}:
  *   get:
- *     summary: Get product by ID
+ *     summary: Получение информации о товаре
+ *     description: Получение детальной информации о товаре по его ID
  *     tags: [Products]
  *     parameters:
  *       - in: path
@@ -94,187 +105,192 @@ router.get('/featured', getFeaturedProducts);
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID товара
  *     responses:
  *       200:
- *         description: Product details
+ *         description: Успешное получение информации о товаре
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
  *       404:
- *         description: Product not found
+ *         description: Товар не найден
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
-router.get('/:id', getProductById);
+router.route('/:id').get(getProductById);
 
 /**
  * @swagger
  * /products:
  *   post:
- *     summary: Create a new product
+ *     summary: Создание нового товара
+ *     description: Создание нового товара (только для администраторов)
  *     tags: [Products]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - name
- *               - description
- *               - price
- *               - category
- *               - images
- *             properties:
- *               name:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *               discountPrice:
- *                 type: number
- *               category:
- *                 type: string
- *               subcategory:
- *                 type: string
- *               images:
- *                 type: array
- *                 items:
- *                   type: string
- *               details:
- *                 type: object
- *               inStock:
- *                 type: boolean
- *               featured:
- *                 type: boolean
+ *             $ref: '#/components/schemas/Product'
  *     responses:
  *       201:
- *         description: Product created successfully
+ *         description: Товар успешно создан
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Ошибка валидации
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *       401:
- *         description: Not authorized
+ *         description: Не авторизован
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *       403:
- *         description: Not an admin
+ *         description: Отказано в доступе
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
-router.post('/', protect, authorize('admin'), validate(productValidation), createProduct);
+router.route('/').post(protect, admin, createProduct);
 
 /**
  * @swagger
  * /products/{id}:
  *   put:
- *     summary: Update a product
+ *     summary: Обновление товара
+ *     description: Обновление информации о товаре (только для администраторов)
  *     tags: [Products]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *               discountPrice:
- *                 type: number
- *               category:
- *                 type: string
- *               subcategory:
- *                 type: string
- *               images:
- *                 type: array
- *                 items:
- *                   type: string
- *               details:
- *                 type: object
- *               inStock:
- *                 type: boolean
- *               featured:
- *                 type: boolean
- *     responses:
- *       200:
- *         description: Product updated successfully
- *       401:
- *         description: Not authorized
- *       403:
- *         description: Not an admin
- *       404:
- *         description: Product not found
- */
-router.put('/:id', protect, authorize('admin'), updateProduct);
-
-/**
- * @swagger
- * /products/{id}:
- *   delete:
- *     summary: Delete a product
- *     tags: [Products]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Product removed successfully
- *       401:
- *         description: Not authorized
- *       403:
- *         description: Not an admin
- *       404:
- *         description: Product not found
- */
-router.delete('/:id', protect, authorize('admin'), deleteProduct);
-
-/**
- * @swagger
- * /products/{id}/reviews:
- *   post:
- *     summary: Create a product review
- *     tags: [Products]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
+ *         description: ID товара
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - rating
- *               - comment
- *             properties:
- *               rating:
- *                 type: number
- *                 minimum: 1
- *                 maximum: 5
- *               comment:
- *                 type: string
+ *             $ref: '#/components/schemas/Product'
  *     responses:
- *       201:
- *         description: Review created successfully
+ *       200:
+ *         description: Товар успешно обновлен
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
  *       400:
- *         description: Product already reviewed
+ *         description: Ошибка валидации
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *       401:
- *         description: Not authorized
+ *         description: Не авторизован
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       403:
+ *         description: Отказано в доступе
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *       404:
- *         description: Product not found
+ *         description: Товар не найден
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
-router.post('/:id/reviews', protect, validate(reviewValidation), createProductReview);
+router.route('/:id').put(protect, admin, updateProduct);
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Удаление товара
+ *     description: Удаление товара (только для администраторов)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID товара
+ *     responses:
+ *       200:
+ *         description: Товар успешно удален
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Product removed
+ *       401:
+ *         description: Не авторизован
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       403:
+ *         description: Отказано в доступе
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Товар не найден
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.route('/:id').delete(protect, admin, deleteProduct);
 
 module.exports = router;
