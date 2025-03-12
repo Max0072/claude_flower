@@ -1,0 +1,132 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.card {
+  @include card($spacing-md, $border-radius-md, $shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-lg;
+    
+    .image {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.badges {
+  position: absolute;
+  top: $spacing-sm;
+  left: $spacing-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.badge {
+  font-size: $font-size-xs;
+  font-weight: 500;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  display: inline-block;
+  text-transform: uppercase;
+  
+  &.badgeNew {
+    background-color: $primary-color;
+    color: white;
+  }
+  
+  &.badgeBestseller {
+    background-color: $secondary-color;
+    color: white;
+  }
+  
+  &.badgeDiscount {
+    background-color: $accent-color;
+    color: white;
+  }
+}
+
+.content {
+  padding: $spacing-md;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: $font-size-md;
+  margin: 0 0 $spacing-xs;
+  font-weight: 500;
+  
+  @include text-ellipsis(2);
+}
+
+.nameLink {
+  text-decoration: none;
+  color: $text-color-primary;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.category {
+  color: $text-color-secondary;
+  font-size: $font-size-sm;
+  margin: 0 0 $spacing-sm;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin: auto 0 $spacing-md;
+}
+
+.price {
+  font-weight: 600;
+  font-size: $font-size-lg;
+  color: $text-color-primary;
+}
+
+.discountPrice {
+  font-weight: 600;
+  font-size: $font-size-lg;
+  color: $accent-color;
+}
+
+.originalPrice {
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+  text-decoration: line-through;
+}
+
+.addToCartBtn {
+  @include button($primary-color, white);
+  width: 100%;
+  text-align: center;
+}

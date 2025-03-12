@@ -1,0 +1,44 @@
+{
+  "id": "1",
+  "name": "Букет роз",
+  "price": 1500,
+  "description": "Красивый букет из 11 роз премиум качества. Идеальный подарок для любого случая.",
+  "imageUrl": "/images/bouquet1.jpg",
+  "category": "roses",
+  "inStock": true,
+  "rating": 4.5,
+  "numReviews": 12,
+  "images": [
+    "/images/bouquet1.jpg",
+    "/images/bouquet1_2.jpg",
+    "/images/bouquet1_3.jpg"
+  ],
+  "details": {
+    "composition": ["Розы красные - 11 шт"],
+    "size": "средний",
+    "freshness": "7 дней",
+    "careInstructions": "Держать в прохладном месте, менять воду каждый день, подрезать стебли."
+  },
+  "reviews": [
+    {
+      "id": "review1",
+      "user": {
+        "id": "user1",
+        "name": "Анна"
+      },
+      "rating": 5,
+      "comment": "Прекрасный букет! Доставили вовремя, цветы свежие и красивые.",
+      "createdAt": "2023-01-15T14:25:00Z"
+    },
+    {
+      "id": "review2",
+      "user": {
+        "id": "user2",
+        "name": "Михаил"
+      },
+      "rating": 4,
+      "comment": "Хороший букет, но один цветок был немного помят. В целом доволен.",
+      "createdAt": "2023-01-10T09:15:00Z"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Букет роз",
+      "price": 1500,
+      "description": "Красивый букет из 11 роз",
+      "imageUrl": "/images/bouquet1.jpg",
+      "category": "roses",
+      "inStock": true,
+      "rating": 4.5,
+      "numReviews": 12
+    },
+    {
+      "id": "2",
+      "name": "Тюльпаны микс",
+      "price": 1200,
+      "description": "Яркий букет из 15 тюльпанов",
+      "imageUrl": "/images/bouquet2.jpg",
+      "category": "tulips",
+      "inStock": true,
+      "rating": 4.2,
+      "numReviews": 8
+    },
+    {
+      "id": "3",
+      "name": "Букет полевых цветов",
+      "price": 2000,
+      "description": "Нежный букет из полевых цветов",
+      "imageUrl": "/images/bouquet3.jpg",
+      "category": "mixed",
+      "inStock": true,
+      "rating": 4.8,
+      "numReviews": 15
+    },
+    {
+      "id": "4",
+      "name": "Гвоздики микс",
+      "price": 900,
+      "description": "Классический букет из 9 гвоздик",
+      "imageUrl": "/images/bouquet4.jpg",
+      "category": "carnations",
+      "inStock": true,
+      "rating": 4.0,
+      "numReviews": 7
+    }
+  ],
+  "page": 1,
+  "pages": 1,
+  "total": 4
+}

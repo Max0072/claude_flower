@@ -1,0 +1,371 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.productDetailPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  margin-top: 70px; // To account for fixed header
+  padding-bottom: $spacing-xxl;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+// Breadcrumbs
+.breadcrumbs {
+  padding: $spacing-md 0;
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+}
+
+.breadcrumbLink {
+  color: $text-color-secondary;
+  text-decoration: none;
+  
+  &:hover {
+    color: $primary-color;
+    text-decoration: underline;
+  }
+}
+
+.breadcrumbSeparator {
+  margin: 0 $spacing-xs;
+}
+
+.breadcrumbCurrent {
+  color: $text-color-primary;
+  font-weight: 500;
+}
+
+// Product Not Found
+.productNotFound {
+  @include card;
+  text-align: center;
+  padding: $spacing-xl;
+  margin: $spacing-xl auto;
+  max-width: 600px;
+  
+  h1 {
+    color: $text-color-primary;
+    margin-bottom: $spacing-md;
+  }
+  
+  p {
+    color: $text-color-secondary;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.backToCatalog {
+  @include button($primary-color, white);
+  display: inline-block;
+}
+
+// Product Content
+.productContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-xl;
+  margin-bottom: $spacing-xxl;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Product Gallery
+.productGallery {
+  @include card;
+  padding: $spacing-md;
+}
+
+.mainImage {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  margin-bottom: $spacing-md;
+  overflow: hidden;
+  
+  @include mobile {
+    height: 300px;
+  }
+}
+
+.mainImageImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badges {
+  position: absolute;
+  top: $spacing-sm;
+  left: $spacing-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.badge {
+  font-size: $font-size-xs;
+  font-weight: 500;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  display: inline-block;
+  text-transform: uppercase;
+  
+  &.badgeNew {
+    background-color: $primary-color;
+    color: white;
+  }
+  
+  &.badgeBestseller {
+    background-color: $secondary-color;
+    color: white;
+  }
+  
+  &.badgeDiscount {
+    background-color: $accent-color;
+    color: white;
+  }
+}
+
+.thumbnails {
+  display: flex;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: $border-radius-sm;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  
+  &.active {
+    border-color: $primary-color;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Product Info
+.productInfo {
+  @include card;
+  padding: $spacing-lg;
+}
+
+.productTitle {
+  font-family: $font-family-secondary;
+  font-size: $font-size-xl;
+  margin: 0 0 $spacing-sm;
+  
+  @include mobile {
+    font-size: $font-size-lg;
+  }
+}
+
+.productCategory {
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+  margin-bottom: $spacing-lg;
+  
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.productPricing {
+  margin-bottom: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.price {
+  font-size: $font-size-xl;
+  font-weight: bold;
+  color: $text-color-primary;
+}
+
+.discountPrice {
+  font-size: $font-size-xl;
+  font-weight: bold;
+  color: $accent-color;
+}
+
+.originalPrice {
+  font-size: $font-size-md;
+  color: $text-color-secondary;
+  text-decoration: line-through;
+}
+
+.sectionTitle {
+  font-size: $font-size-md;
+  font-weight: 600;
+  margin: $spacing-lg 0 $spacing-sm;
+  color: $text-color-primary;
+  
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.productDescription,
+.productCare {
+  color: $text-color-secondary;
+  line-height: 1.6;
+  margin-bottom: $spacing-lg;
+}
+
+.specsList {
+  margin: 0;
+  padding: 0;
+}
+
+.specItem {
+  display: flex;
+  justify-content: space-between;
+  padding: $spacing-sm 0;
+  border-bottom: 1px solid $border-color;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.specName {
+  color: $text-color-secondary;
+}
+
+.specValue {
+  color: $text-color-primary;
+  font-weight: 500;
+}
+
+.addToCartSection {
+  margin-top: $spacing-xl;
+  display: flex;
+  gap: $spacing-md;
+  align-items: center;
+  
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+}
+
+.quantityButton {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: $font-size-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $text-color-primary;
+  
+  &:disabled {
+    color: $text-color-secondary;
+    cursor: not-allowed;
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: $light-gray;
+  }
+}
+
+.quantityInput {
+  width: 50px;
+  height: 40px;
+  border: none;
+  border-left: 1px solid $border-color;
+  border-right: 1px solid $border-color;
+  text-align: center;
+  font-size: $font-size-md;
+  
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+.addToCartButton {
+  @include button($primary-color, white);
+  flex: 1;
+  height: 40px;
+}
+
+// Related Products
+.relatedProducts {
+  margin-top: $spacing-xl;
+}
+
+.relatedTitle {
+  font-family: $font-family-secondary;
+  font-size: $font-size-lg;
+  text-align: center;
+  margin-bottom: $spacing-xl;
+  position: relative;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: $primary-color;
+  }
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-lg;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+  
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

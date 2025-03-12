@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
+const { errorHandler, notFound } = require('./utils/errorHandler');
 
 // Load environment variables
 dotenv.config();
@@ -35,11 +36,46 @@ const swaggerOptions = {
       title: 'Flora Shop API',
       version: '1.0.0',
       description: 'API for online flower shop',
+      contact: {
+        name: 'API Support',
+        email: 'support@flora-shop.com',
+      },
     },
     servers: [
       {
         url: 'http://localhost:5000/api/v1',
         description: 'Development server',
+      },
+      {
+        url: 'https://api.flora-shop.com/api/v1',
+        description: 'Production server',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    tags: [
+      {
+        name: 'Products',
+        description: 'Products API endpoints',
+      },
+      {
+        name: 'Users',
+        description: 'Users API endpoints',
+      },
+      {
+        name: 'Orders',
+        description: 'Orders API endpoints',
+      },
+      {
+        name: 'Cart',
+        description: 'Shopping cart API endpoints',
       },
     ],
   },
@@ -61,16 +97,11 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/cart', cartRoutes);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  
-  res.status(statusCode).json({
-    success: false,
-    error: err.message,
-    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
-  });
-});
+// Handle 404 errors for routes that don't exist
+app.use(notFound);
+
+// Global error handler
+app.use(errorHandler);
 
 // Server
 const PORT = process.env.PORT || 5000;

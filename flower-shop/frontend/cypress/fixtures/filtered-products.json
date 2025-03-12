@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Букет роз",
+      "price": 1500,
+      "description": "Красивый букет из 11 роз",
+      "imageUrl": "/images/bouquet1.jpg",
+      "category": "roses",
+      "inStock": true,
+      "rating": 4.5,
+      "numReviews": 12
+    },
+    {
+      "id": "5",
+      "name": "Красные розы",
+      "price": 1800,
+      "description": "Роскошный букет из 15 красных роз",
+      "imageUrl": "/images/bouquet5.jpg",
+      "category": "roses",
+      "inStock": true,
+      "rating": 4.7,
+      "numReviews": 23
+    },
+    {
+      "id": "8",
+      "name": "Белые розы",
+      "price": 1700,
+      "description": "Элегантный букет из 13 белых роз",
+      "imageUrl": "/images/bouquet8.jpg",
+      "category": "roses",
+      "inStock": true,
+      "rating": 4.6,
+      "numReviews": 18
+    }
+  ],
+  "page": 1,
+  "pages": 1,
+  "total": 3
+}
