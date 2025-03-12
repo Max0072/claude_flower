@@ -4,12 +4,16 @@ import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { useGetCartQuery } from './redux/api/cartApi';
 import { setCart } from './redux/slices/cartSlice';
 
-// For now, let's just create placeholders for components we don't have yet
-// These will be replaced by actual components created by Agent 1
-const Home = () => <div>Home Page</div>;
-const ProductList = () => <div>Product List Page</div>;
-const ProductDetail = () => <div>Product Detail Page</div>;
-const Cart = () => <div>Cart Page</div>;
+// Import our created UI components
+import HomePage from './pages/HomePage';
+import CatalogPage from './pages/CatalogPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import CartPage from './pages/CartPage';
+
+// Import global styles
+import './styles/index.scss';
+
+// Placeholder components for pages we haven't created yet
 const Checkout = () => <div>Checkout Page</div>;
 const Login = () => <div>Login Page</div>;
 const Register = () => <div>Register Page</div>;
@@ -40,10 +44,10 @@ const App: React.FC = () => {
   
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/products" element={<ProductList />} />
-      <Route path="/products/:id" element={<ProductDetail />} />
-      <Route path="/cart" element={<Cart />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/catalog" element={<CatalogPage />} />
+      <Route path="/product/:id" element={<ProductDetailPage />} />
+      <Route path="/cart" element={<CartPage />} />
       <Route path="/checkout" element={<ProtectedRoute element={<Checkout />} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

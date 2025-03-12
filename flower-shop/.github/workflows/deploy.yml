@@ -1,0 +1,61 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  deploy-staging:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Deploy to Staging Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.STAGING_HOST }}
+        username: ${{ secrets.STAGING_USERNAME }}
+        key: ${{ secrets.STAGING_SSH_KEY }}
+        script: |
+          cd /var/www/flora
+          git pull
+          docker-compose -f infrastructure/docker-compose.prod.yml pull
+          docker-compose -f infrastructure/docker-compose.prod.yml up -d
+          docker system prune -af
+          
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Manual approval for Production Deployment
+      uses: trstringer/manual-approval@v1
+      with:
+        secret: ${{ github.token }}
+        approvers: your-github-username
+        minimum-approvals: 1
+        issue-title: "Deploy to Production"
+        issue-body: "Please approve or deny the deployment to production"
+        exclude-workflow-initiator-as-approver: false
+        
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to Production Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.PRODUCTION_HOST }}
+        username: ${{ secrets.PRODUCTION_USERNAME }}
+        key: ${{ secrets.PRODUCTION_SSH_KEY }}
+        script: |
+          cd /var/www/flora
+          git pull
+          docker-compose -f infrastructure/docker-compose.prod.yml pull
+          docker-compose -f infrastructure/docker-compose.prod.yml up -d
+          docker system prune -af

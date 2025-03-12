@@ -1,0 +1,475 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.cartPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  margin-top: 70px; // To account for fixed header
+  padding-bottom: $spacing-xxl;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+.pageTitle {
+  font-family: $font-family-secondary;
+  font-size: $font-size-xxl;
+  margin: $spacing-xl 0;
+  
+  @include mobile {
+    font-size: $font-size-xl;
+    margin: $spacing-lg 0;
+  }
+}
+
+// Empty cart state
+.emptyCart {
+  @include card;
+  text-align: center;
+  padding: $spacing-xl;
+  margin: $spacing-xl auto;
+  max-width: 600px;
+  
+  svg {
+    color: $text-color-secondary;
+    margin-bottom: $spacing-md;
+  }
+  
+  h2 {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-sm;
+  }
+  
+  p {
+    color: $text-color-secondary;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.continueShopping {
+  @include button($primary-color, white);
+  display: inline-block;
+}
+
+// Cart content
+.cartContent {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: $spacing-xl;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Cart items
+.cartItems {
+  @include card;
+  padding: $spacing-md;
+}
+
+.cartHeader {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr;
+  padding: $spacing-sm 0;
+  border-bottom: 1px solid $border-color;
+  color: $text-color-secondary;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  
+  @include mobile {
+    display: none;
+  }
+}
+
+.cartItem {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr;
+  padding: $spacing-md 0;
+  border-bottom: 1px solid $border-color;
+  align-items: center;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+    position: relative;
+  }
+}
+
+.productInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.productImage {
+  width: 80px;
+  height: 80px;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.productDetails {
+  flex: 1;
+}
+
+.productName {
+  font-size: $font-size-md;
+  margin: 0;
+  
+  a {
+    color: $text-color-primary;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+.priceCol {
+  @include mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    &:before {
+      content: 'Цена:';
+      font-size: $font-size-sm;
+      color: $text-color-secondary;
+    }
+  }
+}
+
+.price {
+  font-weight: 500;
+}
+
+.discountPrice {
+  font-weight: 500;
+  color: $accent-color;
+}
+
+.originalPrice {
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+  text-decoration: line-through;
+  margin-left: $spacing-xs;
+}
+
+.quantityCol {
+  @include mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    &:before {
+      content: 'Количество:';
+      font-size: $font-size-sm;
+      color: $text-color-secondary;
+    }
+  }
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.quantityButton {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  font-size: $font-size-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $text-color-primary;
+  
+  &:disabled {
+    color: $text-color-secondary;
+    cursor: not-allowed;
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: $light-gray;
+  }
+}
+
+.quantityInput {
+  width: 40px;
+  height: 32px;
+  border: none;
+  border-left: 1px solid $border-color;
+  border-right: 1px solid $border-color;
+  text-align: center;
+  font-size: $font-size-sm;
+  
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+.totalCol {
+  font-weight: 600;
+  
+  @include mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    &:before {
+      content: 'Итого:';
+      font-size: $font-size-sm;
+      color: $text-color-secondary;
+      font-weight: normal;
+    }
+  }
+}
+
+.actionCol {
+  text-align: right;
+  
+  @include mobile {
+    position: absolute;
+    top: $spacing-sm;
+    right: 0;
+  }
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  color: $text-color-secondary;
+  cursor: pointer;
+  padding: $spacing-xs;
+  border-radius: $border-radius-sm;
+  
+  &:hover {
+    color: $error-color;
+    background-color: $light-gray;
+  }
+}
+
+// Cart summary
+.cartSummary {
+  @include card;
+  padding: $spacing-lg;
+  align-self: flex-start;
+  position: sticky;
+  top: 90px;
+}
+
+.summaryTitle {
+  font-size: $font-size-lg;
+  margin: 0 0 $spacing-lg;
+  padding-bottom: $spacing-sm;
+  border-bottom: 1px solid $border-color;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+}
+
+// Delivery options
+.deliveryOptions {
+  margin: $spacing-lg 0;
+}
+
+.deliveryTitle {
+  font-size: $font-size-md;
+  margin: 0 0 $spacing-md;
+  font-weight: 600;
+}
+
+.deliveryOption {
+  display: flex;
+  align-items: flex-start;
+  padding: $spacing-sm 0;
+  cursor: pointer;
+  
+  input[type="radio"] {
+    margin-top: 4px;
+    margin-right: $spacing-sm;
+    cursor: pointer;
+  }
+}
+
+.deliveryInfo {
+  flex: 1;
+}
+
+.deliveryName {
+  font-weight: 500;
+  margin-bottom: $spacing-xs;
+}
+
+.deliveryDescription {
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+}
+
+.deliveryPrice {
+  font-weight: 500;
+  text-align: right;
+  min-width: 80px;
+}
+
+// Promo code
+.promoCode {
+  margin: $spacing-lg 0;
+  padding: $spacing-md;
+  border: 1px dashed $border-color;
+  border-radius: $border-radius-md;
+}
+
+.promoForm {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.promoInput {
+  flex: 1;
+  padding: $spacing-sm;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+  }
+}
+
+.applyPromoButton {
+  padding: $spacing-sm $spacing-md;
+  background-color: $secondary-color;
+  color: white;
+  border: none;
+  border-radius: $border-radius-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover:not(:disabled) {
+    background-color: darken($secondary-color, 10%);
+  }
+  
+  &:disabled {
+    background-color: $light-gray;
+    color: $text-color-secondary;
+    cursor: not-allowed;
+  }
+}
+
+.promoApplied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.promoInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.promoLabel {
+  font-weight: 500;
+  color: $primary-color;
+}
+
+.promoDiscount {
+  font-size: $font-size-sm;
+  color: $accent-color;
+}
+
+.clearPromoButton {
+  background: none;
+  border: none;
+  color: $text-color-secondary;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  padding: $spacing-xs;
+  
+  &:hover {
+    color: $error-color;
+    text-decoration: underline;
+  }
+}
+
+// Summary total
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: $spacing-lg 0;
+  padding-top: $spacing-md;
+  border-top: 2px solid $light-gray;
+}
+
+.totalLabel {
+  font-weight: 600;
+  font-size: $font-size-md;
+}
+
+.totalAmount {
+  font-weight: bold;
+  font-size: $font-size-xl;
+  color: $primary-color;
+}
+
+.checkoutButton {
+  @include button($primary-color, white);
+  width: 100%;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-md;
+}
+
+.continueShoppingLink {
+  display: block;
+  text-align: center;
+  color: $text-color-secondary;
+  text-decoration: none;
+  font-size: $font-size-sm;
+  
+  &:hover {
+    color: $primary-color;
+    text-decoration: underline;
+  }
+}

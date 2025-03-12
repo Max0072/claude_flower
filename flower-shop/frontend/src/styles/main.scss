@@ -1,26 +1,10 @@
-// Main SCSS file
-// This will be expanded by Agent 1 who is responsible for UI
+// Main SCSS file - Expanded by Agent 1
+@import './variables.scss';
+@import './mixins.scss';
+@import './global.scss';
 
-// Reset and base styles
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-}
-
-// Container
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
+// We'll leave some of the existing utility classes for compatibility
+// while we transition to our new styling system
 
 // Utility classes
 .text-center {
@@ -28,100 +12,91 @@ body {
 }
 
 .mt-1 {
-  margin-top: 0.5rem;
+  margin-top: $spacing-xs;
 }
 
 .mt-2 {
-  margin-top: 1rem;
+  margin-top: $spacing-sm;
 }
 
 .mt-3 {
-  margin-top: 1.5rem;
+  margin-top: $spacing-md;
 }
 
 .mt-4 {
-  margin-top: 2rem;
+  margin-top: $spacing-lg;
 }
 
 .mb-1 {
-  margin-bottom: 0.5rem;
+  margin-bottom: $spacing-xs;
 }
 
 .mb-2 {
-  margin-bottom: 1rem;
+  margin-bottom: $spacing-sm;
 }
 
 .mb-3 {
-  margin-bottom: 1.5rem;
+  margin-bottom: $spacing-md;
 }
 
 .mb-4 {
-  margin-bottom: 2rem;
+  margin-bottom: $spacing-lg;
 }
+
+// Legacy compatibility classes
+// These may be used by code written by other agents
+// We're keeping them temporarily for backward compatibility
 
 // Basic button styles
 .btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s, color 0.3s;
-  text-decoration: none;
-  
-  &:hover {
-    opacity: 0.9;
-  }
-  
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
+  @include button($primary-color, white);
 }
 
 .btn-primary {
-  background-color: #4caf50;
-  color: white;
+  @include button($primary-color, white);
 }
 
 .btn-secondary {
-  background-color: #f44336;
-  color: white;
+  @include button($secondary-color, white);
 }
 
 .btn-outline {
   background-color: transparent;
-  border: 1px solid #4caf50;
-  color: #4caf50;
+  border: 1px solid $primary-color;
+  color: $primary-color;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
   
   &:hover {
-    background-color: #4caf50;
+    background-color: $primary-color;
     color: white;
   }
 }
 
-// Form styles
+// Form styles (legacy compatibility)
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: $spacing-md;
 }
 
 .form-control {
   display: block;
   width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: $spacing-sm;
+  font-size: $font-size-md;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
   
   &:focus {
     outline: none;
-    border-color: #4caf50;
+    border-color: $primary-color;
   }
 }
 
 .form-error {
-  color: #f44336;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  color: $error-color;
+  font-size: $font-size-sm;
+  margin-top: $spacing-xs;
 }
