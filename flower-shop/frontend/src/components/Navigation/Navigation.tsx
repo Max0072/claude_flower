@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useAppSelector } from '../../redux/hooks';
 import styles from './Navigation.module.scss';
 
 interface NavigationProps {
@@ -9,6 +10,9 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ cartItemsCount = 0 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Check if user is authenticated
+  const { isAuthenticated, user } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -119,16 +123,31 @@ const Navigation: React.FC<NavigationProps> = ({ cartItemsCount = 0 }) => {
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </NavLink>
-          <NavLink 
-            to="/account"
-            className={styles.actionIcon}
-            aria-label="My Account"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </NavLink>
+          {isAuthenticated ? (
+            <NavLink 
+              to="/profile"
+              className={styles.actionIcon}
+              aria-label="My Profile"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </NavLink>
+          ) : (
+            <NavLink 
+              to="/login"
+              className={styles.actionIcon}
+              aria-label="Login"
+              title="Войти"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+              </svg>
+            </NavLink>
+          )}
           <NavLink 
             to="/cart"
             className={styles.actionIcon}

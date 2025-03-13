@@ -9,14 +9,13 @@ import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
+import { LoginPage, RegisterPage } from './pages/AuthPage';
 
 // Import global styles
 import './styles/index.scss';
 
 // Placeholder components for pages we haven't created yet
 const Checkout = () => <div>Checkout Page</div>;
-const Login = () => <div>Login Page</div>;
-const Register = () => <div>Register Page</div>;
 const Profile = () => <div>Profile Page</div>;
 const NotFound = () => <div>404 Not Found</div>;
 
@@ -49,8 +48,8 @@ const App: React.FC = () => {
       <Route path="/product/:id" element={<ProductDetailPage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/checkout" element={<ProtectedRoute element={<Checkout />} />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

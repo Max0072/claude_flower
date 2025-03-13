@@ -31,8 +31,10 @@ services:
       - MONGO_URI=mongodb://mongo:27017/flora
       - JWT_SECRET=your_jwt_secret
       - JWT_EXPIRE=30d
+      - REDIS_URI=redis://redis:6379
     depends_on:
       - mongo
+      - redis
 
   mongo:
     image: mongo:latest
@@ -43,5 +45,13 @@ services:
     environment:
       - MONGO_INITDB_DATABASE=flora
 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
 volumes:
   mongo-data:
+  redis-data:
